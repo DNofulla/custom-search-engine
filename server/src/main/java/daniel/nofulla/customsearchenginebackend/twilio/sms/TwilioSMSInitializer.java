@@ -11,15 +11,12 @@ public class TwilioSMSInitializer {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(TwilioSMSInitializer.class);
 
+    @Autowired
     private final TwilioSMSConfiguration twilioConfiguration;
 
-    @Autowired
     public TwilioSMSInitializer(TwilioSMSConfiguration twilioConfiguration) {
         this.twilioConfiguration = twilioConfiguration;
-        Twilio.init(
-                twilioConfiguration.getAccountSid(),
-                twilioConfiguration.getAuthToken()
-        );
-        LOGGER.info("Twilio initialized ... with account sid {} ", twilioConfiguration.getAccountSid());
+        Twilio.init(twilioConfiguration.getAccountSid(), twilioConfiguration.getAuthToken());
+        LOGGER.info("Twilio SMS initialized...", twilioConfiguration.getAccountSid());
     }
 }

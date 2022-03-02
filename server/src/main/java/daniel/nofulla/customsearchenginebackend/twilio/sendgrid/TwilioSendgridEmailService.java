@@ -19,8 +19,7 @@ public class TwilioSendgridEmailService implements TwilioSendgridEmailSenderInte
     @Autowired
     SendGrid sendGrid;
 
-    public Response sendEmail(TwilioSendgridEmailRequest twilioSendgridEmailRequest)
-    {
+    public Response sendEmail(TwilioSendgridEmailRequest twilioSendgridEmailRequest) {
 
         Email from = new Email("dnofulla@outlook.com");
         Email to = new Email(twilioSendgridEmailRequest.getTo());

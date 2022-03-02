@@ -1,7 +1,6 @@
 package daniel.nofulla.customsearchenginebackend.twilio.sendgrid;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import javax.validation.constraints.NotBlank;
 
 public class TwilioSendgridEmailRequest {

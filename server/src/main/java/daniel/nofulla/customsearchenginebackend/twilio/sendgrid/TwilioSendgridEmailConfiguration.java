@@ -1,6 +1,5 @@
 package daniel.nofulla.customsearchenginebackend.twilio.sendgrid;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,10 +10,6 @@ import com.sendgrid.SendGrid;
 @ConfigurationProperties("sendgrid")
 public class TwilioSendgridEmailConfiguration {
     private String key;
-
-    public TwilioSendgridEmailConfiguration() {
-
-    }
 
     @Bean
     public SendGrid getSendgrid() {

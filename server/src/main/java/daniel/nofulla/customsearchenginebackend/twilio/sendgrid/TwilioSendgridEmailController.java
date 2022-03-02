@@ -22,8 +22,7 @@ public class TwilioSendgridEmailController {
     }
 
     @PostMapping
-    public ResponseEntity<?> sendEmail(@RequestBody TwilioSendgridEmailRequest twilioSendgridEmailRequest)
-    {
+    public ResponseEntity<?> sendEmail(@RequestBody TwilioSendgridEmailRequest twilioSendgridEmailRequest) {
         Response response = twilioSendgridEmailService.sendEmail(twilioSendgridEmailRequest);
         int status = response.getStatusCode();
 
@@ -31,7 +30,7 @@ public class TwilioSendgridEmailController {
             return ResponseEntity.ok().body(new JSONObject().appendField("message","Email sent successfully!"));
         }
 
-        return new ResponseEntity("Email failed to send successfully...", HttpStatus.NOT_FOUND);
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
 }

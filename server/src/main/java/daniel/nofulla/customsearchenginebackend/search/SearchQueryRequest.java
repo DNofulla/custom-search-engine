@@ -12,9 +12,13 @@ public class SearchQueryRequest {
     @NotBlank
     private String category;
 
-    public SearchQueryRequest(@JsonProperty("query") String query, @JsonProperty("category") String category) {
+    @NotBlank
+    private String ipAddress;
+
+    public SearchQueryRequest(@JsonProperty("query") String query, @JsonProperty("category") String category, @JsonProperty("ipAddress") String ipAddress) {
         this.query = query;
         this.category = category;
+        this.ipAddress = ipAddress;
     }
 
     public String getQuery() {
@@ -33,9 +37,17 @@ public class SearchQueryRequest {
         this.category = category;
     }
 
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
     @Override
     public String toString() {
-        return "Search Query Request on " + getCategory() + "\n and with query: " + getQuery();
+        return "Search Query Request on " + getCategory() + "\n and with query: " + getQuery() + "\n from IP: " + getIpAddress();
     }
 
 }

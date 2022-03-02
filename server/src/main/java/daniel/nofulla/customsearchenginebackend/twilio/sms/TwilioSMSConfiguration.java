@@ -11,10 +11,6 @@ public class TwilioSMSConfiguration {
     private String authToken;
     private String trialNumber;
 
-    public TwilioSMSConfiguration() {
-
-    }
-
     public String getAccountSid() {
         return accountSid;
     }
