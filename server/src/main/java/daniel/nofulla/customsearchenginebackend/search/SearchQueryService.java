@@ -21,10 +21,10 @@ public class SearchQueryService implements SearchQueryServiceInterface {
 
 
     @Autowired
-    SearchQueryConfiguration searchQueryConfiguration;
+    private SearchQueryConfiguration searchQueryConfiguration;
 
     @Autowired
-    SearchHistoryService searchHistoryService;
+    private SearchHistoryService searchHistoryService;
 
     public ResponseEntity<?> getQueryResults(SearchQueryRequest searchQueryRequest) {
 
@@ -45,11 +45,15 @@ public class SearchQueryService implements SearchQueryServiceInterface {
                 break;
         }
 
+        System.out.println("Selected Category " + category);
+
         ObjectMapper mapper = new ObjectMapper();
 
         try {
 
             OkHttpClient client = new OkHttpClient();
+            System.out.println("Created OkHttpClient ");
+
 
             Request request = new Request.Builder()
                     .url(searchUrl + query)
@@ -59,20 +63,35 @@ public class SearchQueryService implements SearchQueryServiceInterface {
                     .addHeader("x-rapidapi-host", searchQueryConfiguration.getHost())
                     .addHeader("x-rapidapi-key", searchQueryConfiguration.getKey())
                     .build();
+            System.out.println("Build Request ");
+
 
             Response response = client.newCall(request).execute();
+
+            System.out.println("Executed Request ");
+
+
             String jsonData = response.body().string();
-            Map<String, String> map = mapper.readValue(jsonData, Map.class);
+
+            System.out.println("Converted json to string ");
+
+
+            Map<String, ?> map = mapper.readValue(jsonData, Map.class);
+
+            System.out.println("Read JSON into Map ");
+
 
             searchHistoryService.getUserSearchHistory(new SearchHistoryGetAllRequest(searchQueryRequest.getIpAddress()));
 
-            ResponseEntity requestAddUser = searchHistoryService.addOneSearchHistory(new SearchHistoryAddOneRequest(searchQueryRequest.getQuery(), searchQueryRequest.getIpAddress()));
+            ResponseEntity requestAddUser = searchHistoryService.addOneSearchHistory(new SearchHistoryAddOneRequest(searchQueryRequest.getIpAddress(), searchQueryRequest.getQuery()));
 
-
+            System.out.println("Finished calling addOne Search service and getUserSearch Service");
             JSONObject jsonObject = new JSONObject(map).appendField("user", requestAddUser.getBody());
+            System.out.println("Appending user from JSON object. Returning response");
 
             return ResponseEntity.ok().body(jsonObject);
         } catch (IOException ex) {
+            System.out.println("Exception on Search Query Service");
             System.out.println(ex.getMessage());
             return ResponseEntity.badRequest().body(new JSONObject().appendField("error", true).appendField("message", "Request failed, IOException"));
 

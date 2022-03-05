@@ -11,17 +11,20 @@ import com.sendgrid.Response;
 
 @RestController
 @RequestMapping("twilio/sendgrid")
+@CrossOrigin(origins = "*")
 public class TwilioSendgridEmailController {
 
     @Autowired
     private TwilioSendgridEmailService twilioSendgridEmailService;
 
     @GetMapping
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> getData() {
         return ResponseEntity.ok().body(new JSONObject().appendField("message", "Twilio Sendgrid Endpoint"));
     }
 
     @PostMapping
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> sendEmail(@RequestBody TwilioSendgridEmailRequest twilioSendgridEmailRequest) {
         Response response = twilioSendgridEmailService.sendEmail(twilioSendgridEmailRequest);
         int status = response.getStatusCode();

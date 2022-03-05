@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("twilio/sms")
+@CrossOrigin(origins = "*")
 public class TwilioSMSController {
 
     private final TwilioSMSService service;
@@ -19,11 +20,13 @@ public class TwilioSMSController {
     }
 
     @GetMapping
+    @CrossOrigin(origins = "*")
     public ResponseEntity<?> getData() {
         return ResponseEntity.ok().body(new JSONObject().appendField("message", "Twilio SMS Endpoint"));
     }
 
     @PostMapping
+    @CrossOrigin(origins = "*")
     public void sendSms(@Valid @RequestBody TwilioSMSRequest smsRequest) {
         service.sendSms(smsRequest);
     }

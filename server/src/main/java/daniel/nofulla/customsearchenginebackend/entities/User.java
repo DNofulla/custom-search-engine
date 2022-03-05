@@ -3,6 +3,7 @@ package daniel.nofulla.customsearchenginebackend.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -17,10 +18,11 @@ public class User implements Serializable {
     private String ipAddress;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<SearchHistory> searchHistory;
+    private Collection<SearchHistory> searchHistory = new ArrayList<>();
 
     public User() {
-
+        this.ipAddress = "0.0.0.0";
+        this.searchHistory = new ArrayList<SearchHistory>();
     }
 
     public User(String ipAddress) {
@@ -50,12 +52,17 @@ public class User implements Serializable {
         this.ipAddress = ipAddress;
     }
 
-    public List<SearchHistory> getSearchHistory() {
+    public Collection<SearchHistory> getSearchHistory() {
         return searchHistory;
     }
 
-    public void setSearchHistory(ArrayList<SearchHistory> searchHistory) {
+    public void setSearchHistory(Collection<SearchHistory> searchHistory) {
         this.searchHistory = searchHistory;
+    }
+
+    @Override
+    public String toString() {
+        return "IP: " + getIpAddress();
     }
 
     public boolean equals(User user) {

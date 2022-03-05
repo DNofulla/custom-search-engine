@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SearchHistoryService implements SearchHistoryServiceInterface {
@@ -18,7 +16,6 @@ public class SearchHistoryService implements SearchHistoryServiceInterface {
     @Autowired
     private UserRepository userRepository;
 
-    @Override
     public ResponseEntity<?> getUserSearchHistory(SearchHistoryGetAllRequest searchHistoryGetAllRequest) {
         User user = new User(searchHistoryGetAllRequest.getIpAddress());
         User userExists = findUserByIpAddress(searchHistoryGetAllRequest.getIpAddress());
@@ -32,15 +29,35 @@ public class SearchHistoryService implements SearchHistoryServiceInterface {
     }
 
     public ResponseEntity<?> addOneSearchHistory(SearchHistoryAddOneRequest searchHistoryAddOneRequest) {
+        System.out.println("Started addOneSearchHistory");
+        System.out.println("IP: " + searchHistoryAddOneRequest.getIpAddress());
+        System.out.println("Query: " + searchHistoryAddOneRequest.getQuery());
 
-        User userToReturn = findUserByIpAddress(searchHistoryAddOneRequest.getIpAddress());
-        ArrayList<SearchHistory> searchHistoryToEdit = (ArrayList<SearchHistory>) userToReturn.getSearchHistory();
+        User userToReturn = new User();
+        userToReturn = findUserByIpAddress(searchHistoryAddOneRequest.getIpAddress());
+
+        System.out.println("Got user by ip address");
+
+        List<SearchHistory> searchHistoryToEdit = new ArrayList<SearchHistory>();
+        System.out.println(userToReturn);
+        searchHistoryToEdit.addAll(userToReturn.getSearchHistory());
+        System.out.println("Created arraylist of search histories");
+
+
         searchHistoryToEdit.add(new SearchHistory(searchHistoryAddOneRequest.getQuery(), userToReturn));
+
+        System.out.println("Added Search History Record");
+
+
         userToReturn.setSearchHistory(searchHistoryToEdit);
+        System.out.println("Set new search history");
+
         userRepository.save(userToReturn);
+        System.out.println("Saved new user w/ updated search history");
 
         Map map = new HashMap();
         map.put("user", userToReturn);
+        System.out.println("Sending back new User with updated search history");
         return ResponseEntity.ok().body(new JSONObject(map));
     }
 
@@ -77,7 +94,7 @@ public class SearchHistoryService implements SearchHistoryServiceInterface {
     }
 
     public User findUserByIpAddress(String ipAddress) {
-        for (User user : (ArrayList<User>) userRepository.findAll()) {
+        for (User user : userRepository.findAll()) {
             if (user.getIpAddress().equals(ipAddress)) {
                 return user;
             }
